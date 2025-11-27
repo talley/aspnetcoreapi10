@@ -1,0 +1,26 @@
+meta {
+  name: update_user
+  type: http
+  seq: 1
+}
+
+put {
+  url: http://localhost:5179/users/1
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "id": 1,
+    "name": "Talley",
+    "age": 55,
+    "status": true,
+    "addedat": "2025-11-25T22:24:27.455262",
+    "addedby": "postgres"
+  }
+}
