@@ -4,22 +4,23 @@ namespace aspnetcoreapi10.EndPoints
     {
         public static void MapUsersEndPoints(this WebApplication app)
         {
-            //app.MapGroup("/users");
-            app.MapGet("/users", async (northwindContext db) =>
+           var usersGroup = app.MapGroup("/users").RequireAuthorization();
+
+            usersGroup.MapGet("/", async (northwindContext db) =>
             {
                 var users =await db.users.ToListAsync();
                 return Results.Ok(users);
             })
             .WithName("GetUsers");
 
-            app.MapGet("/users/{id}", async (northwindContext db, int id) =>
+            usersGroup.MapGet("/{id}", async (northwindContext db, int id) =>
             {
                 var user = await db.users.FindAsync(id);
                 return user != null ? Results.Ok(user) : Results.NotFound();
             })
             .WithName("GetUserById");
 
-            app.MapPost("/users", async (northwindContext db, users user) =>
+            usersGroup.MapPost("/", async (northwindContext db, users user) =>
             {
                 await db.users.AddAsync(user).ConfigureAwait(false);
                 await db.SaveChangesAsync().ConfigureAwait(false);
@@ -27,7 +28,7 @@ namespace aspnetcoreapi10.EndPoints
             })
             .WithName("CreateUser");
 
-            app.MapPut("/users/{id}", async (northwindContext db, int id, users updatedUser) =>
+            usersGroup.MapPut("/{id}", async (northwindContext db, int id, users updatedUser) =>
             {
                 var user = await db.users.FindAsync(id);
                 if (user == null)
@@ -55,7 +56,7 @@ namespace aspnetcoreapi10.EndPoints
             .WithName("UpdateUser");
 
 
-            app.MapDelete("/users/{id}", async (northwindContext db, int id) =>
+            app.MapDelete("/{id}", async (northwindContext db, int id) =>
             {
                 var user = await db.users.FindAsync(id);
                 if (user == null)

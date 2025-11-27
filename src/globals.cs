@@ -4,3 +4,8 @@ global using aspnetcoreapi10.Entities;
 global using aspnetcoreapi10;
 global using System.Linq;
 global using aspnetcoreapi10.EndPoints;
+global using System.Text;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
