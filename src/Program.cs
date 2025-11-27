@@ -48,15 +48,10 @@ app.UseHttpsRedirection();
 
 app.MapPost("/login", async (northwindContext db, LoginRequest login, IConfiguration config) =>
 {
-    // TODO: authenticate user. Replace with your real auth logic (hash check)
-    // Option A: check a UserAuths table
-    // Option B: check db.users for matching username/password (not recommended without hashing)
+ 
     var user = await db.users.FirstOrDefaultAsync(u => u.name == login.Username);
     if (user == null)
         return Results.Unauthorized();
-
-    // TODO: In real life verify hashed password here
-    // If you have a password hash field, validate it (BCrypt/Argon2/etc)
 
     var token = AuthenticationHelpers.GenerateJwtToken(user.id.ToString(), config);
     return Results.Ok(new { token });
@@ -67,9 +62,6 @@ app.MapUsersEndPoints();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+
 
 public record LoginRequest(string Username, string Password);
